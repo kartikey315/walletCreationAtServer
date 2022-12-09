@@ -9,8 +9,12 @@ const connectionString = "mongodb+srv://admin:admin@cluster0.7iqkmon.mongodb.net
 const app = express();
 
 app.use(express.json());
-
-app.use(cors({ origin: "http://192.168.250.107:3000", credentials: true }));
+const corsOptions ={
+   origin:'*', 
+   credentials:true,            //access-control-allow-credentials:true
+   optionSuccessStatus:200,
+}
+app.use(cors(corsOptions));
 
 
 app.post("/wallet",walletController);
