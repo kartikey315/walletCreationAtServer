@@ -10,7 +10,7 @@ const app = express();
 
 app.use(express.json());
 
-app.use(cors({ origin: "http://192.168.250.107:3000", credentials: true }));
+app.use(cors({ origin: "http://192.168.1.2:3000", credentials: true }));
 
 
 app.post("/wallet",walletController);

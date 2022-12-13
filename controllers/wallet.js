@@ -47,9 +47,10 @@ const balance = async (req, res, next) => {
 
 const send = async (req, res, next) => {
   let amount = req.body.amount;
-  let receiverwalletaddress = req.body.receiverwalletaddress;
+  let receiverwalletaddress = req.body.receiver;
   let email = req.body.email
   let provider = req.body.provider
+  console.log(receiverwalletaddress);
   try {
     const user = await User.findOne({email});
     if(!!user){
@@ -103,4 +104,4 @@ const erc20Transfer = async (req, res, next) => {
 }
 
 
-module.exports = { walletController, balance, send, txActivity, erc20Transfer };
+module.exports = { walletController, balance, send, erc20Transfer };

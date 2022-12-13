@@ -1,30 +1,22 @@
 const ethers = require("ethers");
 const axios = require("axios");
 const balance = async (walletAddress, privateKey, provider) => {
-    let provider1;
-    if (provider == 'ethereum') {
-        provider1 = ethers.getDefaultProvider("goerli");
-    }
-    else{
-        provider1 = new ethers.providers.JsonRpcProvider("https://rpc-mumbai.maticvigil.com");
-    }
+    
+    const provider1 = new ethers.providers.JsonRpcProvider(provider);
     const wallet = new ethers.Wallet(privateKey, provider1);
     let total_balance = await wallet.getBalance();
     total_balance = ethers.utils.formatUnits(total_balance, 18).toString();
-    console.log('Wallet balance is:', total_balance);
+    //console.log('Wallet balance is:', total_balance);
     return total_balance;
 
 }
 
 const send = async (walletAddress, privateKey, receiverwalletaddress, amount, provider) => {
-    let provider1
-    if (provider == 'ethereum') {
-        provider1 = ethers.getDefaultProvider("goerli");
-    }
-    else{
-         provider1 = new ethers.providers.JsonRpcProvider("https://rpc-mumbai.maticvigil.com");
-    }
+    
+    const provider1 = new ethers.providers.JsonRpcProvider(provider);
+    console.log('receiver:',receiverwalletaddress);
     const wallet = new ethers.Wallet(privateKey, provider1);
+    
     let tx = {
         to: receiverwalletaddress,
         // Convert currency unit from ether to wei
@@ -84,13 +76,14 @@ const send = async (walletAddress, privateKey, receiverwalletaddress, amount, pr
 // }
 
 const tokenTransfer = async (walletAddress, privateKey, receiverwalletaddress, amount, provider, tokenaddress) => {
-    let provider1;
-
+    
+    
     console.log(receiverwalletaddress);
     console.log(tokenaddress);
+    console.log(provider);
 
   
-    provider1 = new ethers.providers.JsonRpcProvider(provider);
+    const provider1 = new ethers.providers.JsonRpcProvider(provider);
     
     const wallet = new ethers.Wallet(privateKey, provider1);
 
@@ -111,4 +104,4 @@ const tokenTransfer = async (walletAddress, privateKey, receiverwalletaddress, a
 
 }
 
-module.exports = { balance, send, txActivity, tokenTransfer }
+module.exports = { balance, send, tokenTransfer }
