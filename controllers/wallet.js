@@ -103,5 +103,25 @@ const erc20Transfer = async (req, res, next) => {
 
 }
 
+const erc20Balance = async (req, res, next) => {
+  let email = req.body.email;
+  let provider = req.body.provider;
+  let tokenaddress = req.body.tokenaddress;
 
-module.exports = { walletController, balance, send, erc20Transfer };
+  try {
+    const user = await User.findOne({email});
+    if(!!user){
+      //res.status(404).send("User not found");
+    }
+    
+    let resp = await web3.tokenBalance(user.walletAddress, provider, tokenaddress);
+    console.log(resp);
+    res.status(200).send(resp);
+  } catch (error) {
+    console.log(error)
+  }
+
+}
+
+
+module.exports = { walletController, balance, send, erc20Transfer, erc20Balance };

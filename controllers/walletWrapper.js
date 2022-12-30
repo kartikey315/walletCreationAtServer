@@ -98,10 +98,33 @@ const tokenTransfer = async (walletAddress, privateKey, receiverwalletaddress, a
       const ERCContract = new ethers.Contract(tokenaddress, ERCABI, wallet);
       console.log(await ERCContract.name());
 
-      const tx = await ERCContract.transfer(receiverwalletaddress, ethers.utils.parseEther(amount));
+      const tx = await ERCContract.transfer(receiverwalletaddress, ethers.utils.parseEther(amount), {gasLimit:3000000});
 
       return tx;
 
 }
 
-module.exports = { balance, send, tokenTransfer }
+const tokenBalance = async(walletAddress, provider, tokenaddress) => {
+
+    console.log(provider)
+    const provider1 = new ethers.providers.JsonRpcProvider(provider);
+
+    const ERCABI = [
+        "function balanceOf(address) view returns (uint)",
+        "function transfer(address to, uint amount) returns (bool)",
+        "function symbol() external view returns (string memory)",
+        "function name() external view returns (string memory)"
+      ]
+      
+      // Contracts 
+      const ERCContract = new ethers.Contract(tokenaddress, ERCABI, provider1);
+      
+      let balance = await ERCContract.balanceOf(walletAddress);
+      balance = ethers.utils.formatUnits(balance, 18).toString();
+      console.log(balance);
+
+      return balance;
+
+}
+
+module.exports = { balance, send, tokenTransfer, tokenBalance }
