@@ -81,6 +81,7 @@ const tokenTransfer = async (walletAddress, privateKey, receiverwalletaddress, a
     console.log(receiverwalletaddress);
     console.log(tokenaddress);
     console.log(provider);
+    console.log(amount);
 
   
     const provider1 = new ethers.providers.JsonRpcProvider(provider);
@@ -99,7 +100,7 @@ const tokenTransfer = async (walletAddress, privateKey, receiverwalletaddress, a
       console.log(await ERCContract.name());
 
       const tx = await ERCContract.transfer(receiverwalletaddress, ethers.utils.parseEther(amount), {gasLimit:3000000});
-
+      console.log(tx);
       return tx;
 
 }
