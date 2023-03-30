@@ -22,9 +22,34 @@ const walletController = async (req, res, next) => {
     }
     res.status(200).send({ wallet: { address: walletAddress, privateKey: privateKey } });
   } catch (error) {
+    res.status(400).send(error)
     console.log(error)
   }
 };
+const assetMantle = async (req, res, next) => {
+  console.log(req.body);
+  try {
+    let email = req.body.email;
+    const usr = await User.findOne({ email })
+    if (!usr) {
+      let userGivenMnemonic =
+      "moral neither potato earn solar lamp calm insane blouse blush nose field";
+      let wallet = await createWallet(userGivenMnemonic, "");
+      walletAddress = wallet.address;
+      privateKey = wallet.mnemonic;
+      const user = new User({ email, walletAddress, privateKey });
+      await user.save();
+    } else {
+      walletAddress = usr.walletAddress;
+      privateKey = usr.privateKey;
+    }
+    res.status(200).send({ wallet: { address: walletAddress, privateKey: privateKey } });
+  } catch (error) {
+    res.status(400).send(error)
+    console.log(error)
+  }
+};
+
 
 const balance = async (req, res, next) => {
   let email = req.body.email;
@@ -40,6 +65,7 @@ const balance = async (req, res, next) => {
     console.log(resp);
     res.status(200).send(resp);
   } catch (error) {
+    res.status(400).send(error)
     console.log(error)
   }
 
@@ -124,4 +150,4 @@ const erc20Balance = async (req, res, next) => {
 }
 
 
-module.exports = { walletController, balance, send, erc20Transfer, erc20Balance };
+module.exports = { walletController, balance, send, erc20Transfer, erc20Balance, assetMantle };
